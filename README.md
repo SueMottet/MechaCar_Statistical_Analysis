@@ -43,11 +43,13 @@ The specifications from the MechaCare suspension coils indicated that the varian
 Two data frames were created with summary statistics on the suspension coil psi across all manufactoring lots and then for each lot to analyze the variance manufacturing lots for this design specification.
  
 The total summary table for psi:
+
 ![total summary stat image](/resources/total_summary_psi.png)
 
 * The analyzed manufacturing data indicates the design is meeting this design specification for all the manufacturing lots in total.
 
 The lot summary table for psi:
+
 ![lot summary stat image](/resources/lot_summary_psi.png)
 
 * The variance of the suspension coils in Lot 1 and Lot 2 also do not exceed 100 pounds per square inch and indicate that the suspension coils in these lots meet this design specification.
@@ -66,9 +68,7 @@ With t-tests:
 
 The population mean compared against was 1,500 pounds per square inch.
 
-The p-value for all lots was 0.51, meaning that there is not enough statistical evidence to reject the null hypothesis. Therefore the mean PSI of all manufacturing lots is not statistically different from the population mean. The p-values for lot 1, lot 2, and lot 3 were 0.9, 0.35, and 0.64 respectively. 
-
-Hence, the mean PSIs of each individual lot are also not statistically different from the population mean of 1,500 PSI.
+### All manufacturing lots t- test:
 
 A t-test was performed on the MechaCar manufacturing lots to determine if all the manufacturing lots were statistically different from the population mean of 1,500 pounds per square inch.
 
@@ -76,25 +76,31 @@ The t-test results for all manufacturing lots:
 
 ![t test summary image](/resources/t_test_all_2_pop.png)
 
+With a p-value of .06, the psi mean for all lots is not statistically different from the population mean of 1,500 psi and indicates that there is not enough statistical evidence to reject the null hypothesis. 
+
+### Lot t-tests: 
 A t-test was also performed on each lot individually to determine if each lot was statistically different than the population mean.
 
 The t-test results for lot 1:
 	
 ![t test lot 1 image](/resources/t_test_lot1_2_pop.png)
 
-The p-value for lot 1 was 0.0000001401. 
+With a p-value of .46, the mean psi for lot 1 is not statistically different from the population mean of 1,500 psi and indicates that there is not enough statistical evidence to reject the null hypothesis for the lot.
+
 
 The t-test results for lot 2:
 	
 ![t test lot 2 image](/resources/t_test_lot2_2_pop.png)
 
+With a p-value of .94, the mean psi for lot 2 is not statistically different from the population mean of 1,500 psi and indicates that there is not enough statistical evidence to reject the null hypothesis for the lot.
+
 The t-test results for lot 3:
 	
 ![t test lot 3 image](/resources/t_test_lot3_2_pop.png)
 
+With a p-value of .03, the mean psi for lot 3 is statistically different from the population mean of 1,500 psi and indicates that there is enough statistical evidence to reject the null hypothesis for the lot.
+
 ## MechaCar Statistical Analysis Summary
-Write up a short description of the study design for additional statistical analysis. In the written summaries
-, we would like you to think critically about your analysis, not demonstrate mastery of automotive manufacturing.
 
 ## Study Design: MechaCar vs Competition
 MechaCar could perform an ANOVA test to compare the MechaCar to its competition: cost, city and highway fuel efficiency, horse power, safety rating, maintenance cost.
