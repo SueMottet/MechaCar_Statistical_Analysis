@@ -1,0 +1,138 @@
+---
+title: "MechaCar Statistical Analysis"
+author: "Sue Mottet"
+date: "1/12/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(jsonlite)
+library(tidyverse)
+library(dplyr)
+library(knitr)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Review the production data for insights
+## Linear Regression to Predict MPG
+* Perform multiple linear regression analysis to identify which variables in the dataset predict the mpg of MechaCar prototypes
+
+* Collect summary statistics on the pounds per square inch (PSI) of the suspension coils from the manufacturing lots
+* Run t-tests to determine if the manufacturing lots are statistically different from the mean population
+* Design a statistical study to compare vehicle performance of the MechaCar vehicles against vehicles from other manufacturers. For each statistical analysis, you’ll write a summary interpretation of the findings.
+```{r cars}
+MechaCar <- read.csv(file = 'MechaCar_mpg.csv', check.names = F ,stringsAsFactors= F)
+view(MechaCar)
+```
+
+## Linear regression
+```{r}
+lm(mpg ~ vehicle_length + vehicle_weight + spoiler_angle + ground_clearance + AWD,data=MechaCar) #generate multiple linear regression model
+```
+## Obtain stat metrics using Summary ()
+```{r}
+summary(lm(mpg ~ vehicle_length + vehicle_weight + spoiler_angle + ground_clearance + AWD,data=MechaCar)) #generate summary statistics
+```
+## Linear Regression to Predict MPG
+To quantify how well the linear model can be used to predict future observations, our linear regression functions calculate an r-squared value. The r-squared (r2) value is also known as the coefficient of determination and represents how well the regression model approximates real-world data points. In most cases, the r-squared value will range between 0 and 1 and can be used as a probability metric to determine the likelihood that future data points will fit the linear model.
+
+When it comes to multiple linear regression, look at each independent variable to determine if there is a significant relationship with the dependent variable. Once each independent variable is evaluated, evaluate the r-squared value of the model to determine if the model sufficiently predicts our dependent variable.
+
+
+In addition to overall model fit and the statistical test for slope, most data scientists would be curious about the contribution of each variable to the multiple linear regression model. To determine which variables provide a significant contribution to the linear model, we must look at the individual variable p-values.
+
+In the summary output, each Pr(>|t|) value represents the probability that each coefficient contributes a random amount of variance to the linear model. According to our results, vehicle weight and horsepower (as well as intercept) are statistically unlikely to provide random amounts of variance to the linear model. In other words the vehicle weight and horsepower have a significant impact on quarter-mile race time. When an intercept is statistically significant, it means that the intercept term explains a significant amount of variability in the dependent variable when all independent vairables are equal to zero. Depending on our dataset, a significant intercept could mean that the significant features (such as weight and horsepower) may need scaling or transforming to help improve the predictive power of the model. Alternatively, it may mean that there are other variables that can help explain the variability of our dependent variable that have not been included in our model. Depending on the dataset and desired performance of the model, you may want to change your independent variables and/or transform them and then re-evaluate your coefficients and significance.
+
+Despite the number of significant variables, the multiple linear regression model outperformed the simple linear regression. 
+
+According to the summary output from the multiple linear regression, the r-squared valuel is 0.6825 in our multiple linear regression model and the p-value is significant.
+
+The output from the linear regression shows that there is sufficient evidence to reject our null hypothesis, which means that the slope of our linear model is not zero.
+
+The ...variables/coefficients provided a non-random amount of variance to the mpg values in the dataset?
+The slope of the linear model is/not considered to be zero because...
+This linear model does/does not predict mpg of MechaCar prototypes effectively due to/because ...
+
+## Create Summary Statistics
+The MechaCar Suspension_Coil.csv dataset contains the results from multiple production lots. In this dataset, the weight capacities of multiple suspension coils were tested to determine if the manufacturing process is consistent across production lots.
+
+### Create a summary statistics table to show:
+
+* The suspension coil’s PSI continuous variable across all manufacturing lots
+* The following PSI metrics for each lot: mean, median, variance, and standard deviation.
+
+```{r}
+SuspensionCoil <- read.csv(file = 'Suspension_Coil.csv', check.names = F ,stringsAsFactors= F)
+```
+### Summary statistics
+### Total summary table (all lots summary) 
+```{r}
+#create summary table
+ all_lots_psi<- SuspensionCoil %>% group_by() %>% summarize(Mean=mean(PSI), Median=median(PSI), Variance = var(PSI), SD = sd(PSI), .groups = 'keep') 
+```
+### Lot summary table
+```{r}
+#create summary table
+ lots_psi<- SuspensionCoil %>% group_by(Manufacturing_Lot) %>% summarize(Mean=mean(PSI), Median=median(PSI), Variance = var(PSI), SD = sd(PSI), .groups = 'keep') 
+
+```
+### T-Tests on Suspension Coils
+
+Perform t-tests to determine if all manufacturing lots and each lot individually are statistically different from the population mean of 1,500 pounds per square inch.
+
+All lots mean versus population mean (1500 value provided)
+```{r}
+t.test((SuspensionCoil$PSI), mu =1500)
+```
+Random sample (50) of all lots
+```{r}
+
+sample_total <-SuspensionCoil %>% sample_n(50)
+```
+Compare random sample 50 (across a lots) to the population mean of 1500 (provided value)
+```{r}
+t.test((sample_total$PSI), mu =1500)
+```
+Compare random sample 50 (across all lots) versus all lots mean
+```{r}
+# compare sample versus all lots mean
+t.test(sample_total$PSI,mu=mean(SuspensionCoil$PSI))
+```
+
+Random sample (25) of Lot 1
+```{r}
+sample_lot1 <-subset(SuspensionCoil,Manufacturing_Lot == 'Lot1') %>%sample_n(25)
+```
+Compare mean for lot 1 versus population mean (provided value)
+```{r}
+t.test(sample_lot1$PSI,mu=1500)
+```
+Compare mean for lot 1 versus all lots mean
+```{r}
+t.test(sample_lot1$PSI,mu=mean(SuspensionCoil$PSI))
+```
+Random sample (25) of Lot 2
+```{r}
+sample_lot2<-subset(SuspensionCoil,Manufacturing_Lot == 'Lot2') %>%sample_n(25)
+```
+Compare mean for lot 2 versus population mean (provided value)
+```{r}
+t.test(sample_lot2$PSI,mu=1500)
+```
+Compare mean for lot 2 versus all lots mean
+```{r}
+t.test(sample_lot2$PSI,mu=mean(SuspensionCoil$PSI))
+```
+Random sample (25) of Lot 3
+```{r}
+sample_lot3 <-subset(SuspensionCoil,Manufacturing_Lot == 'Lot3') %>%sample_n(25)
+```
+Compare mean for lot 3 versus population mean (provided value)
+```{r}
+t.test(sample_lot3$PSI,mu=1500)
+```
+Compare mean for lot 3 versus all lots mean
+```{r}
+t.test(sample_lot3$PSI,mu=mean(SuspensionCoil$PSI))
+```
+
